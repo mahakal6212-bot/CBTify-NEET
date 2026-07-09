@@ -1,4 +1,4 @@
-]import { GoogleGenAI } from "@google/genai";
+import { GoogleGenAI } from "@google/genai";
 
 export default async ({ req, res, log, error, env }) => {
   try {
@@ -10,16 +10,12 @@ export default async ({ req, res, log, error, env }) => {
 
     const body = req.body ? JSON.parse(req.body) : {};
 
-    const prompt = body.prompt || "Say Hello from CBTify AI Server";
-
-    log("Prompt: " + prompt);
+    const prompt = body.prompt || "Hello";
 
     const result = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: prompt,
     });
-
-    log("Gemini Response: " + result.text);
 
     return res.json({
       success: true,
@@ -30,7 +26,7 @@ export default async ({ req, res, log, error, env }) => {
 
     return res.json({
       success: false,
-      message: err.message,
+      error: err.message,
     });
   }
-}
+};
