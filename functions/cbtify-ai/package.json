@@ -1,0 +1,8 @@
+{
+  "name": "cbtify-ai",
+  "version": "1.0.0",
+  "type": "module",
+  "dependencies": {
+    "@google/genai": "^2.10.0"
+  }
+}
