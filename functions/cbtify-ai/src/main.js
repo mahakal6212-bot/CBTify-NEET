@@ -1,26 +1,36 @@
-import { GoogleGenAI } from "@google/genai";
+]import { GoogleGenAI } from "@google/genai";
 
-export default async ({ req, res, env }) => {
+export default async ({ req, res, log, error, env }) => {
   try {
+    log("Function Started");
+
     const ai = new GoogleGenAI({
       apiKey: env.GEMINI_API_KEY,
     });
 
-    const prompt = req.body?.prompt || "Say Hello from CBTify AI Server";
+    const body = req.body ? JSON.parse(req.body) : {};
 
-    const response = await ai.models.generateContent({
+    const prompt = body.prompt || "Say Hello from CBTify AI Server";
+
+    log("Prompt: " + prompt);
+
+    const result = await ai.models.generateContent({
       model: "gemini-2.5-flash",
       contents: prompt,
     });
 
+    log("Gemini Response: " + result.text);
+
     return res.json({
       success: true,
-      response: response.text,
+      response: result.text,
     });
-  } catch (error) {
+  } catch (err) {
+    error(err);
+
     return res.json({
       success: false,
-      error: error.message,
+      message: err.message,
     });
   }
-};
+}
